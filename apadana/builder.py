@@ -21,7 +21,7 @@ from mbuild.lib.atoms import H
 from mbuild.lib.recipes import Monolayer
 from parmed import gromacs
 
-from .gromacs_files import (FORCEFIELD_FOLDER, number_gro_residues, read_topology_sections,
+from .gromacs_files import (FORCEFIELD_FOLDER, number_gro_residues, read_topology_sections, remove_user_and_host,
                             write_index_file, write_molecule_itp, write_posres_files, write_topol_top)
 from .molecules import Alkylsilane
 from .reports import write_size_report, write_surface_readme, write_system_readme
@@ -256,6 +256,7 @@ def build_sam_system(chain_length,
                     box=system.box, foyer_kwargs={"assert_bond_params": True, "assert_angle_params": True,
                                                   "assert_dihedral_params": True}, forcefield_debug=True,
                     residues=residues)
+        remove_user_and_host(f'{system_name}.top')
 
         write_molecule_itp(system_name)
         number_gro_residues(system_name)

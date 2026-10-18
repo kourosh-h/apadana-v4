@@ -131,6 +131,21 @@ def write_molecule_itp(system_name):
         itp.writelines('\n')
 
 
+def remove_user_and_host(top_file):
+    """
+    Remove the lines with the user name and the computer name from the header that ParmEd writes
+    into a .top file, so that the files of a system can be shared without them.
+    """
+    with open(top_file) as top:
+        lines = top.readlines()
+    kept = []
+    for line in lines:
+        if not (line.startswith(';   By user:') or line.startswith(';   On host:')):
+            kept.append(line)
+    with open(top_file, 'w') as top:
+        top.writelines(kept)
+
+
 def write_topol_top(system_name, file_name='topol.top', with_water=False):
     """
     Write the topology that GROMACS reads (topol.top, or topol_wet.top with water).
