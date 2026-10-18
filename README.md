@@ -1,39 +1,96 @@
-# apadana
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/banner_dark.png">
+    <img src="docs/images/banner_light.png" width="100%" alt="Side views of alkylsilane SAMs with L = 8 on the silica slab at three coverages">
+  </picture>
+</p>
+
+<h1 align="center">apadana</h1>
+
+<p align="center">
+  <b>All-atom models of alkylsilane self-assembled monolayers on silica, prepared for GROMACS</b>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/version-4.0-555555" alt="version 4.0">
+  <img src="https://img.shields.io/badge/python-3.10-1257B0" alt="Python 3.10">
+  <img src="https://img.shields.io/badge/GROMACS-2023%2B-C9690C" alt="GROMACS 2023 or later">
+  <img src="https://img.shields.io/badge/license-MIT-555555" alt="MIT license">
+</p>
+
+<p align="center">
+  <a href="#model-systems">Model systems</a> &nbsp;·&nbsp;
+  <a href="#installation">Installation</a> &nbsp;·&nbsp;
+  <a href="#building-a-system">Building a system</a> &nbsp;·&nbsp;
+  <a href="#simulation-workflow">Simulation workflow</a> &nbsp;·&nbsp;
+  <a href="docs/output_files.md">Output files</a> &nbsp;·&nbsp;
+  <a href="#test-case">Test case</a>
+</p>
+
+<br>
 
 apadana builds all-atom models of alkylsilane self-assembled monolayers (SAMs) on a hydroxylated
 α-quartz (001) silica slab and prepares them for molecular dynamics simulations with GROMACS [1].
 For every system, one folder is written with the structure, the topology, the force-field files,
 the run parameters of all simulation stages and the job scripts, together with a one-page
-overview sheet of the built system.
-
-<p align="center">
-  <img src="docs/images/overview_L6_G1.65.png" width="760" alt="Overview sheet of a SAM system">
-</p>
-<p align="center">
-  <sub>Upper part of the overview sheet of a system with chain length <i>L</i> = 6 and coverage
-  Γ = 1.65 molecules/nm<sup>2</sup>: side views of the box, mass density along <i>z</i>, binding
-  locations of the chains on both faces of the slab and their nearest-neighbor distances.</sub>
-</p>
+overview sheet of the built system. The banner above shows SAMs of chain length *L*&nbsp;=&nbsp;8 at the
+coverages Γ&nbsp;=&nbsp;0.45, 1.65 and 3.90 molecules/nm<sup>2</sup>, as built by apadana.
 
 
 ## What apadana does
 
-- Grafts alkylsilanes of any chain length *L* and coverage Γ on both faces of a hydroxylated
-  α-quartz (001) slab, with independent random binding locations on the two faces. With a random
-  seed, every build gives the same system.
-- Uses the relaxed slab of the package, builds a new slab of any size from α-quartz unit cells, or
-  reads a slab of the user (`.gro` or `.pdb`).
-- Prepares a new slab for its relaxation in GROMACS (energy minimization and NPT simulation in the
-  *xy*-plane), so that the chains are grafted on a relaxed slab.
-- Assigns the atom types and writes the GROMACS structure, molecule and topology files, the
-  force-field files, index groups with one group per chain, and position restraints for the whole
-  slab, its centermost layer and the chains.
-- Writes the run parameters of all stages of the dry and the wet simulations, including the
-  solvation of the wet systems, and SLURM job scripts that run the stages one after another, skip
-  finished stages and continue interrupted ones.
-- Checks the input files of all stages with `gmx grompp`, without running the simulations.
-- Prepares the pristine slab (Γ = 0) for the same dry and wet simulations as the SAM systems.
-- Summarizes every system in a README and a one-page overview sheet.
+<table>
+<tr>
+<th width="33%">Build</th>
+<th width="33%">Simulate</th>
+<th width="34%">Check and report</th>
+</tr>
+<tr>
+<td valign="top">
+
+- Alkylsilanes of any chain length *L* and coverage Γ on both faces of the slab
+- Independent random binding locations on the two faces, reproducible with a seed
+- The relaxed slab of the package, new slabs of any size from unit cells, or a slab of the user
+- The pristine slab (Γ&nbsp;=&nbsp;0)
+
+</td>
+<td valign="top">
+
+- GROMACS structure, molecule and topology files with their force fields
+- Index groups with one group per chain, and position restraints
+- Run parameters of every dry and wet stage, solvation included
+- SLURM job scripts that skip finished stages and continue interrupted ones
+- Relaxation of new slabs before chains are grafted on them
+
+</td>
+<td valign="top">
+
+- Check of the input files of all stages with `gmx grompp` alone
+- README of every system
+- One-page overview sheet of every system
+- Test case, with a test that builds it again and compares every file
+
+</td>
+</tr>
+</table>
+
+
+## Overview sheet
+
+Every build ends with a one-page summary of the system: side views of the box to scale, the mass
+density along *z*, the binding locations of the chains on both faces and their spacing, and tables
+of the system data and of the simulation workflow.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/overview_L6_G1.65.png" alt="Overview sheet of a SAM system"></td>
+<td width="50%"><img src="docs/images/overview_new_slab_8x9.png" alt="Overview sheet of a new silica slab"></td>
+</tr>
+<tr>
+<td align="center"><sub>SAM system with <i>L</i>&nbsp;=&nbsp;6 and Γ&nbsp;=&nbsp;1.65 molecules/nm<sup>2</sup> (the test case)</sub></td>
+<td align="center"><sub>New silica slab of 8 · 9 unit cells, before its relaxation</sub></td>
+</tr>
+</table>
 
 
 ## Model systems
@@ -69,9 +126,11 @@ Then, in the folder of this repository:
 pip install .
 ```
 
-The version of setuptools is fixed as in the tested environment, since mBuild 0.16 relies on its
-older `pkg_resources` module. GROMACS (2023 or later) is needed to run the simulations, but not to
-build the systems.
+> **Note**
+>
+> The version of setuptools is fixed as in the tested environment, since mBuild 0.16 relies on its
+> older `pkg_resources` module. GROMACS (2023 or later) is needed to run the simulations, but not to
+> build the systems.
 
 
 ## Building a system
@@ -82,7 +141,13 @@ from apadana import build_sam_system
 build_sam_system(chain_length=8, coverage=2.40, output_folder='L8_G2.40', random_seed=1)
 ```
 
-All arguments of `build_sam_system`:
+`chain_length` is *L* and `coverage` is Γ in molecules/nm<sup>2</sup>. With `random_seed`, every
+build gives the same binding locations; without it, every build is a new random arrangement. A
+build of a system on the slab of the package takes about 10 minutes.
+
+<details>
+<summary><b>All arguments of <code>build_sam_system</code></b></summary>
+<br>
 
 | Argument | Default | Meaning |
 | --- | --- | --- |
@@ -97,12 +162,13 @@ All arguments of `build_sam_system`:
 | `sam_resname` | `'OTS'` | residue name of the alkylsilanes |
 | `system_name` | `'func'` | base name of the structure and topology files |
 | `output_folder` | `'.'` | folder of the system; it is created if it does not exist |
-| `random_seed` | `None` | integer that makes the binding locations reproducible; without it, every build is a new random arrangement |
+| `random_seed` | `None` | integer that makes the binding locations reproducible |
 | `hpc` | `None` | SLURM settings of the job scripts (see [Simulation workflow](#simulation-workflow)) |
 | `make_plot` | `True` | write the overview sheet |
 
-A commented example with all arguments is
-[`examples/build_example.py`](examples/build_example.py).
+A commented example with all arguments is [`examples/build_example.py`](examples/build_example.py).
+
+</details>
 
 ### Silica slab
 
@@ -154,13 +220,13 @@ of a freshly built system are often strained, so the systems are equilibrated st
 steps that increase as the system becomes stable, before the production runs:
 
 | State | Stage | Run | Time step (fs) | Length (ns) | Restrained silica |
-| --- | --- | --- | --- | --- | --- |
+| :---: | :---: | --- | :---: | :---: | --- |
 | dry | 1 | energy minimization (steepest descent) | - | - | whole slab |
 | dry | 2 | NVT | 0.25 | 1 | whole slab |
 | dry | 3 | NVT | 0.5 | 1 | whole slab |
 | dry | 4 | NVT | 1 | 1 | whole slab |
 | dry | 5 | NVT, equilibration | 2 | 20 | centermost 1 nm |
-| dry | 6 | NVT, production | 2 | 100 | centermost 1 nm |
+| dry | 6 | **NVT, production** | 2 | 100 | centermost 1 nm |
 | wet | 1 | solvation of the end of dry stage 5 (`gmx solvate`, TIP3P) | - | - | - |
 | wet | 2 | energy minimization (steepest descent) | - | - | centermost 1 nm |
 | wet | 3 | NVT | 0.25 | 1 | centermost 1 nm |
@@ -168,7 +234,11 @@ steps that increase as the system becomes stable, before the production runs:
 | wet | 5 | NVT | 1 | 1 | centermost 1 nm |
 | wet | 6 | NPT, C-rescale, water slab thickness | 1 | 10 | centermost 1 nm |
 | wet | 7 | NVT, equilibration | 2 | 20 | centermost 1 nm |
-| wet | 8 | NPT, Parrinello-Rahman, production | 2 | 100 | centermost 1 nm |
+| wet | 8 | **NPT, Parrinello-Rahman, production** | 2 | 100 | centermost 1 nm |
+
+<details>
+<summary><b>Run parameters</b></summary>
+<br>
 
 The temperature is kept at 298.15 K by the V-rescale thermostat [2] with a time constant of 0.2 ps.
 The cut-off of the real-space Lennard-Jones and Coulomb interactions is 1.2 nm, with a force switch
@@ -182,6 +252,12 @@ place: on the whole slab in the first dry stages and on its centermost 1 nm afte
 and time steps of the stages are set in the stage tables of [`apadana/workflow.py`](apadana/workflow.py),
 and all other run parameters in the `.mdp` templates of [`apadana/data/mdp`](apadana/data/mdp).
 
+</details>
+
+<details>
+<summary><b>Job scripts and settings</b></summary>
+<br>
+
 The four job scripts are written for SLURM. `bash submit_all.sh` submits them with the dependencies
 between them: the dry production and the wet relaxation start after the dry relaxation, and the wet
 production after the wet relaxation. The job settings are given to `build_sam_system` as a
@@ -190,7 +266,11 @@ dictionary, for example `hpc={'account': 'my_account', 'partition': 'batch'}`, w
 `time_production`, `modules`, `gmx`, `launcher` and `mdrun_options` (defaults in `HPC_DEFAULTS` of
 `apadana/workflow.py`), or edited in the scripts. Finished stages are skipped and an interrupted
 stage continues from its checkpoint, so a job that reached its time limit is submitted again as it
-is. The input files of all stages can be checked with `gmx grompp` alone, without running the
+is.
+
+</details>
+
+The input files of all stages can be checked with `gmx grompp` alone, without running the
 simulations:
 
 ```bash
@@ -212,15 +292,19 @@ L8_G2.40/
 ```
 
 The stages run in `dry/<n>_<stage>/` and `wet/<n>_<stage>/`, and the production runs end in
-`dry/6_production_nvt/` and `wet/8_production_npt/`. Every file, the overview sheet, the files of
-a new slab and the atom names are described in [docs/output_files.md](docs/output_files.md).
+`dry/6_production_nvt/` and `wet/8_production_npt/`.
+
+> **Output files**
+>
+> Every file of a build and of the simulations, the panels of the overview sheet, the files of a new
+> slab and the atom names are described in [docs/output_files.md](docs/output_files.md).
 
 
 ## Test case
 
 [`examples/test_case_L6_G1.65`](examples/test_case_L6_G1.65) holds the complete output of
-[`examples/build_test_case.py`](examples/build_test_case.py): a SAM system with *L* = 6 and
-Γ = 1.65 molecules/nm<sup>2</sup> on the relaxed slab, built with random seed 1. It shows all files
+[`examples/build_test_case.py`](examples/build_test_case.py): a SAM system with *L*&nbsp;=&nbsp;6 and
+Γ&nbsp;=&nbsp;1.65 molecules/nm<sup>2</sup> on the relaxed slab, built with random seed 1. It shows all files
 that apadana writes for a SAM system and can be simulated as it is. To check an installation or a
 change of the code, the test case is built again and compared file by file with the stored one:
 
@@ -249,7 +333,7 @@ matplotlib.
 | `apadana/data/mdp` | `.mdp` templates |
 | `examples` | `build_example.py` (all arguments), `build_test_case.py` and the test case |
 | `tests` | `run_test_case.py` and `compare_with_reference.py` |
-| `docs` | description of the output files and the images of this page |
+| `docs` | description of the output files, the images of this page and `make_readme_images.py`, which makes them |
 
 
 ## Force fields
@@ -265,8 +349,9 @@ with charmm2gmx, the water model converted with CHARMM-GUI, and the INTERFACE pa
 The α-quartz unit cell was generated with CHARMM-GUI [12]. The original headers of these files are
 kept.
 
-
-## References
+<details>
+<summary><b>References</b></summary>
+<br>
 
 1. M. J. Abraham et al., GROMACS: High performance molecular simulations through multi-level
    parallelism from laptops to supercomputers, *SoftwareX* **1–2**, 19–25 (2015).
@@ -293,12 +378,12 @@ kept.
 12. Y. K. Choi et al., CHARMM-GUI Nanomaterial Modeler for modeling and simulation of nanomaterial
     systems, *J. Chem. Theory Comput.* **18**, 479–493 (2022).
 
+</details>
 
-## Author
+<br>
 
-Kourosh Hasheminejad
+---
 
-
-## License
-
-MIT, see [LICENSE](LICENSE).
+<p align="center">
+  <sub>apadana is written by Kourosh Hasheminejad and released under the <a href="LICENSE">MIT license</a>.</sub>
+</p>
