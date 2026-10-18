@@ -1,0 +1,37 @@
+;
+;
+;--------------------------------------------------------
+; Topoloy file 
+;--------------------------------------------------------
+;
+;
+#include "ForceField/charmm36-jul2022.ff/forcefield.itp"
+#include "ForceField/interface_silica_emami.ff/ff_interface_emami.itp"
+#include "ForceField/charmm_sam_connection_point.ff/ff_charmm_connection_point.itp"
+
+;--------------------------------------------------------
+
+#include "func.itp"
+
+
+;--------------------------------------------------------
+
+#ifdef POSRES
+#include "POSRES_MIDSUR.itp"
+#endif
+
+#ifdef POSRES_SURFACE
+#include "POSRES_SUR.itp"
+#endif
+
+;--------------------------------------------------------
+
+[ system ]
+; Name
+Generic title
+
+;--------------------------------------------------------
+
+[ molecules ]
+; Compound    #mols
+system1         1

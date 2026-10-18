@@ -1,0 +1,63 @@
+define                  = -DPOSRES 
+;---------------------------------------------------
+integrator              = md
+dt                      = 0.001
+nsteps                  = 10000000
+;nstxtcout               = 1000
+;nstvout                 = 1000
+;nstfout                 = 1000
+nstcalcenergy           = 1000
+nstenergy               = 1000
+nstlog                  = 10000
+nstxout-compressed      = 10000
+;---------------------------------------------------
+cutoff-scheme           = Verlet
+ns_type                 = grid		
+nstlist                 = 10
+rlist                   = 1.2
+vdwtype                 = Cut-off
+vdw-modifier            = Force-switch
+rvdw_switch             = 1.0
+rvdw                    = 1.2
+DispCorr                = EnerPres	; account for cut-off vdW scheme
+coulombtype             = pme
+rcoulomb                = 1.2
+pme_order               = 4		; cubic interpolation
+fourierspacing          = 0.12		; grid spacing for FFT
+;---------------------------------------------------
+tcoupl                  = V-rescale
+ld-seed                 = 1370
+tc_grps                 = Surface    Ots       TIP3
+tau_t                   = 0.2        0.2       0.2
+ref_t                   = 298.15     298.15    298.15
+;------------------------------------------------------------------------------
+; Pressure coupling 
+pcoupl                  = C-rescale              ;Parrinello-Rahman ; Berendsen
+pcoupltype              = semiisotropic          ;isotropic ; semiisotropic ; anisotropic
+tau_p                   = 0.2 
+ref_p                   = 0.0        1.0 
+nstpcouple              = 10
+compressibility         = 0.0    4.5e-5      ;For water at 1 atm and 300 K the compressibility is 4.5e-5 bar-1. 
+;------------------------------------------------------------------------------
+; Bond parameters
+continuation            = yes
+constraint_algorithm    = lincs
+constraints             = H-bonds
+lincs_iter              = 1
+lincs_order             = 4
+;---------------------------------------------------
+;nstcomm                 = 0
+;comm_mode               = linear
+;comm_grps               = Surface Ots TIP3
+;---------------------------------------------------
+gen-vel                 = no
+;gen-temp                = 298.15
+;gen-seed                = -1
+;---------------------------------------------------
+refcoord_scaling        = com
+periodic-molecules      = yes
+;---------------------------------------------------
+pbc                     = xyz
+;---------------------------------------------------
+
+

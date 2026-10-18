@@ -1,0 +1,55 @@
+define                  = -DPOSRES 
+;---------------------------------------------------
+integrator              = md
+dt                      = 0.002
+nsteps                  = 50000000
+;nstxtcout               = 10000
+;nstvout                 = 10000
+;nstfout                 = 10000
+nstcalcenergy           = 10000
+nstenergy               = 10000
+nstlog                  = 100000
+nstxout-compressed      = 10000
+;---------------------------------------------------
+cutoff-scheme           = Verlet
+ns_type                 = grid		
+nstlist                 = 10
+rlist                   = 1.2
+vdwtype                 = Cut-off
+vdw-modifier            = Force-switch
+rvdw_switch             = 1.0
+rvdw                    = 1.2
+DispCorr                = EnerPres	; account for cut-off vdW scheme
+coulombtype             = pme
+rcoulomb                = 1.2
+pme_order               = 4		; cubic interpolation
+fourierspacing          = 0.12		; grid spacing for FFT
+;---------------------------------------------------
+tcoupl                  = V-rescale
+ld-seed                 = 1370
+tc_grps                 = Surface    Ots
+tau_t                   = 0.2        0.2
+ref_t                   = 298.15     298.15
+;---------------------------------------------------
+; Bond parameters
+constraint_algorithm    = lincs
+constraints             = H-bonds
+lincs_iter              = 1
+lincs_order             = 4
+;---------------------------------------------------;
+nstcomm                 = 0
+comm_mode               = linear
+comm_grps               = Surface Ots
+;---------------------------------------------------
+continuation            = yes
+gen-vel                 = no
+;gen-temp                = 298.15
+;gen-seed                = -1
+;---------------------------------------------------
+refcoord_scaling        = all
+periodic-molecules      = yes
+;---------------------------------------------------
+pbc                     = xyz
+;---------------------------------------------------
+
+

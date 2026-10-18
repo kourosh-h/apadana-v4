@@ -1,0 +1,6 @@
+boxX = 7.8623
+boxY = 7.6601
+boxZ = 14.317
+coverage = 1.65
+chainLength = 6
+number of grafted chains = 99
