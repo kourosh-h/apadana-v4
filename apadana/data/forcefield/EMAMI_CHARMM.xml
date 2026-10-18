@@ -1,0 +1,127 @@
+
+
+
+
+ <ForceField name="emami_silica" version="0.11.3">
+ <AtomTypes>
+    <Type name="ISC4"  class="ISC4"  element="Si" mass="28.0860" def="[Si;X4](O)(O)(O)O" desc="silica bulk Si bonded to four O"/> 
+    <Type name="IOC23" class="IOC23" element="O"  mass="15.9994" def="[O;X2]([Si;%ISC4])([Si;%ISC4])" desc="silica bulk bridging O"/>
+    <Type name="IOC24" class="IOC24" element="O"  mass="15.9994" def="[O;X2]([Si;%ISC4])H" desc="silica surface hydroxyl O"/>
+    <Type name="IOC25" class="IOC25" element="O"  mass="15.9994" def="[O;X2]([Si;%ISC4])([Si;%SI])" desc="bonding O"/>    
+    <Type name="IHOY"  class="IHOY"  element="H"  mass="1.0080"  def="H([O;%IOC24])" desc="silica surface hydroxyl H"/>
+
+    <Type name="CG331" class="CT" element="C"  mass="12.01100" def="[C;X4](C)(H)(H)H" desc="alkane CH3" overrides="CG321"/>
+    <Type name="CG321" class="CT" element="C"  mass="12.01100" def="[C;X4](C)(H)H" desc="alkane CH2"/>
+    <Type name="HGA3" class="HC" element="H"  mass="1.00800"  def="H[C;%CG331]" desc="alkane H in CH3" overrides="HGA2"/>
+    <Type name="HGA2" class="HC" element="H"  mass="1.00800"  def="H[C;%CG321]" desc="alkane H in CH2"/>
+    <Type name="OSIH" class="OH" element="O"  mass="15.9994"  def="[O;X2]([Si;%SI])(H)" desc="all-atom O: mono alcohols"/>
+    <Type name="HSIO" class="HO" element="H"  mass="1.00800"  def="H[O;%OSIH]" desc="all-atom H(O): mono alcohols, OP(=O)2"/>
+    <Type name="SI"   class="ST" element="Si" mass="28.0855"  def="[Si;X4](O)(O)(O)(C)" desc="silane Si"/>
+ </AtomTypes>
+ <HarmonicBondForce>
+    <Bond class1="IOC24" class2="IHOY" length="9.450000e-02" k="4.142160e+05"/> 
+    <Bond class1="ISC4" class2="IOC23" length="1.680000e-01" k="2.384880e+05"/> 
+    <Bond class1="ISC4" class2="IOC24" length="1.680000e-01" k="2.384880e+05"/> 
+    <Bond class1="ISC4" class2="IOC25" length="1.680000e-01" k="2.384880e+05"/> 
+
+    <Bond class1="CT" class2="CT" length="0.15280000" k="186188.00"/> 
+    <Bond class1="OH" class2="HO" length="0.096" k="462750.3999999999"/> 
+    <Bond class1="CT" class2="HC" length="0.10900000000000001" k="284511.99999999994"/> 
+    <Bond class1="CT" class2="ST" length="0.185" k="167360.0"/> 
+    <Bond class1="ST" class2="OH" length="0.165" k="251040.0"/>  
+
+    <Bond class1="ST" class2="IOC25" length="0.165" k="251040.0"/> 
+ </HarmonicBondForce>
+ <HarmonicAngleForce>
+    <Angle class1="IOC23" class2="ISC4" class3="IOC23" angle="1.0950000e+02" k="8.3680000e+02"/> 
+    <Angle class1="IOC23" class2="ISC4" class3="IOC24" angle="1.0950000e+02" k="8.3680000e+02"/>
+    <Angle class1="IOC23" class2="ISC4" class3="IOC25" angle="1.0950000e+02" k="8.3680000e+02"/> 
+    <Angle class1="IOC24" class2="ISC4" class3="IOC24" angle="1.0950000e+02" k="8.3680000e+02"/> 
+    <Angle class1="IOC25" class2="ISC4" class3="IOC24" angle="1.0950000e+02" k="8.3680000e+02"/>
+    <Angle class1="IOC25" class2="ISC4" class3="IOC25" angle="1.0950000e+02" k="8.3680000e+02"/> 
+    <Angle class1="ISC4" class2="IOC23" class3="ISC4"  angle="1.4900000e+02" k="8.3680000e+02"/> 
+    <Angle class1="ISC4" class2="IOC24" class3="IHOY"  angle="1.1500000e+02" k="4.1840000e+02"/> 
+
+    <Angle class1="CT" class2="CT" class3="CT" angle="1.911135530933791" k="334.72"/> 
+    <Angle class1="CT" class2="CT" class3="HC" angle="1.911135530933791" k="418.40000000000003"/> <!--from opls-->
+    <Angle class1="HC" class2="CT" class3="HC" angle="1.911135530933791" k="292.88"/> <!--from opls-->
+    <Angle class1="CT" class2="CT" class3="ST" angle="2.094395102" k="254.973"/> <!--doi="10.1007/s11249-005-5085-4"-->
+    <Angle class1="HC" class2="CT" class3="ST" angle="1.932079" k="313.80"/> <!--from opls-->
+    <Angle class1="CT" class2="ST" class3="OH" angle="1.745329252" k="502.08"/> <!--10.1007/s11249-005-5085-4-->
+    <Angle class1="ST" class2="OH" class3="HO" angle="2.144800211" k="198.961"/> <!--10.1007/s11249-005-5085-4-->
+    <Angle class1="ST" class2="OH" class3="ST" angle="2.530727415" k="165.92"/> <!--10.1007/s11249-005-5085-4-->
+    <Angle class1="OH" class2="ST" class3="OH" angle="1.919862177" k="502.08"/> <!--10.1007/s11249-005-5085-4-->
+
+    <Angle class1="ISC4" class2="IOC25" class3="ST" angle="2.530727415" k="165.92"/> <!--from SI-->
+    <Angle class1="IOC25" class2="ST" class3="OH" angle="1.919862177" k="502.080"/> <!--corrected DOI: 10.1007/s11249-005-5085-4-->
+    <Angle class1="IOC25" class2="ST" class3="CT" angle="1.745329252" k="502.080"/> <!--corrected DOI: 10.1007/s11249-005-5085-4-->
+ </HarmonicAngleForce>
+ <RBTorsionForce>
+    <Proper class1="IHOY"  class2="IOC24" class3="ISC4"  class4="IOC24" c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="3.0" c4="0.0" c5="0.0"/>
+    <Proper class1="IHOY"  class2="IOC24" class3="ISC4"  class4="IOC25" c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="3.0" c4="0.0" c5="0.0"/>
+    <Proper class1="IOC23" class2="ISC4"  class3="IOC24" class4="IHOY"  c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="3.0" c4="0.0" c5="0.0"/>
+    <Proper class1="IOC24" class2="ISC4"  class3="IOC23" class4="ISC4"  c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="3.0" c4="0.0" c5="0.0"/>
+    <Proper class1="IOC25" class2="ISC4"  class3="IOC23" class4="ISC4"  c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="3.0" c4="0.0" c5="0.0"/>
+    <Proper class1="ISC4"  class2="IOC23" class3="ISC4"  class4="IOC23" c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="2.0" c4="0.0" c5="0.0"/>
+
+
+    <Proper class1="CT" class2="CT" class3="CT" class4="CT" c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="3.0" c4="0.0" c5="0.0"/>
+    <Proper class1="CT" class2="CT" class3="CT" class4="HC" c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="3.0" c4="0.0" c5="0.0"/>
+    <Proper class1="HC" class2="CT" class3="CT" class4="HC" c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="3.0" c4="0.0" c5="0.0"/>
+    <Proper class1="ST" class2="" class3="" class4="" c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="5.0" c4="0.0" c5="0.0"/>
+    <Proper class1="" class2="ST" class3="" class4="" c0="9.0" c1="0.000000e+00" c2="0.000000e+00" c3="5.0" c4="0.0" c5="0.0"/>    
+ </RBTorsionForce>
+ <NonbondedForce coulomb14scale="1.0" lj14scale="1.0">
+     <Atom type="ISC4"  charge="1.100"  sigma="3.69722968028e-01" epsilon="3.891120e-01"/>
+     <Atom type="IOC23" charge="-0.550" sigma="3.09141855195e-01" epsilon="2.259360e-01"/>
+     <Atom type="IOC24" charge="-0.675" sigma="3.09141855195e-01" epsilon="5.104480e-01"/>
+     <Atom type="IOC25" charge="-0.655" sigma="0.315378146222" epsilon="0.6363864"/>
+     <Atom type="IHOY"  charge="0.400"  sigma="9.66625109182e-02" epsilon="6.276000e-02"/>
+
+     <Atom type="CG331" charge="-0.270"  sigma="0.363486677001"  epsilon="0.3263520"/>
+     <Atom type="CG321" charge="-0.180"  sigma="0.358141284692"  epsilon="0.2343040"/>
+     <Atom type="HGA3"  charge="0.090"   sigma="0.238760856462"  epsilon="0.1004160"/>
+     <Atom type="HGA2"  charge="0.090"   sigma="0.238760856462"  epsilon="0.1464400"/>
+     <Atom type="OSIH"  charge="-0.510" sigma="0.315378146222" epsilon="0.6363864"/> 
+     <Atom type="HSIO"  charge="0.320"  sigma="0.040001352445"   epsilon="0.1924640"/>
+     <Atom type="SI"    charge="0.760"  sigma="0.391995435982"   epsilon="2.5104000"/>
+ </NonbondedForce>
+</ForceField>
+
+
+
+
+
+<!--
+
+ Additional Notes
+ - The original parameters are defined as kcal/mol, this file uses kJ/mol; a conversion factor of 4.184 was used,
+    consistent with openMM. 
+ - PI is defined as 3.141592653589 for conversion to radians, consistent with openMM.
+ - Conversion from OPLS-style dihedrals to RB follow the formulas detailed in the GROMACS manual. Specifically,
+   OPLS form: 
+     0.5*(F1*(1+cos(phi))+ F2*(1-cos(2phi))+ F3*(1+cos(3phi))+F4*(1-cos(4phi)))
+   RB mapping:
+     c0 = F2+0.5*(F1+F3)
+     c1 = 0.5*(-F1+3F3)
+     c2 = -F2 + 4F4
+     c3 = -2F3
+     c4 = -4F4
+     c5 = 0
+
+
+<CustomAngleForce energy="(scale*kth*(theta-theta0)^2)+(scale*kub*(s-s0)^2)">
+ <GlobalParameter name="scale" defaultValue="0.5"/>
+ <PerAngleParameter name=" theta0"/>
+ <PerAngleParameter name="kth"/>
+ <PerAngleParameter name=" s0"/>
+ <PerAngleParameter name="kub"/>
+ <Angle class1="IOC23" class2="ISC4" class3="IOC23" theta0="1.0950000e+02" kth="8.3680000e+02" s0="0.0000000e+00" kub="0.0000000e+00"/> 
+ <Angle class1="IOC23" class2="ISC4" class3="IOC24" theta0="1.0950000e+02" kth="8.3680000e+02" s0="0.0000000e+00" kub="0.0000000e+00"/> 
+ <Angle class1="IOC24" class2="ISC4" class3="IOC24" theta0="1.0950000e+02" kth="8.3680000e+02" s0="0.0000000e+00" kub="0.0000000e+00"/> 
+ <Angle class1="ISC4" class2="IOC23" class3="ISC4"  theta0="1.4900000e+02" kth="8.3680000e+02" s0="0.0000000e+00" kub="0.0000000e+00"/> 
+ <Angle class1="ISC4" class2="IOC24" class3="IHOY"  theta0="1.1500000e+02" kth="4.1840000e+02" s0="0.0000000e+00" kub="0.0000000e+00"/> 
+</CustomAngleForce>
+
+
+-->

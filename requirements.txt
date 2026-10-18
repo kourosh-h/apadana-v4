@@ -1,0 +1,7 @@
+mbuild==0.16.0
+foyer==0.12.1
+parmed
+numpy
+matplotlib
+# do not upgrade setuptools beyond 69.5.1 (needed by mbuild 0.16)
+setuptools==69.5.1

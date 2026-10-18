@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# environments
+.venv/
+venv/
+.env
+
+# editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+
+# GROMACS output, when systems are built or run inside this folder
+*.tpr
+*.trr
+*.xtc
+*.edr
+*.cpt
+*.log
+mdout.mdp
+\#*#

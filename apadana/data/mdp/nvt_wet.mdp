@@ -1,0 +1,55 @@
+define                  = -DPOSRES 
+;---------------------------------------------------
+integrator              = md
+dt                      = 0.00025
+nsteps                  = 4000000
+;nstxtcout               = 1000
+;nstvout                 = 1000
+;nstfout                 = 1000
+nstcalcenergy           = 1000
+nstenergy               = 1000
+nstlog                  = 10000
+nstxout-compressed      = 10000
+;---------------------------------------------------
+cutoff-scheme           = Verlet
+ns_type                 = grid		
+nstlist                 = 10
+rlist                   = 1.2
+vdwtype                 = Cut-off
+vdw-modifier            = Force-switch
+rvdw_switch             = 1.0
+rvdw                    = 1.2
+DispCorr                = EnerPres	; account for cut-off vdW scheme
+coulombtype             = pme
+rcoulomb                = 1.2
+pme_order               = 4		; cubic interpolation
+fourierspacing          = 0.12		; grid spacing for FFT
+;---------------------------------------------------
+tcoupl                  = V-rescale
+ld-seed                 = 1370
+tc_grps                 = Surface    Ots       TIP3
+tau_t                   = 0.2        0.2       0.2
+ref_t                   = 298.15     298.15    298.15
+;---------------------------------------------------
+; Bond parameters
+continuation            = no
+constraint_algorithm    = lincs
+constraints             = H-bonds
+lincs_iter              = 1
+lincs_order             = 4
+;---------------------------------------------------
+nstcomm                 = 0
+comm_mode               = linear
+comm_grps               = Surface Ots TIP3
+;---------------------------------------------------
+gen-vel                 = yes
+gen-temp                = 298.15
+gen-seed                = -1
+;---------------------------------------------------
+refcoord_scaling        = com
+periodic-molecules      = yes
+;---------------------------------------------------
+pbc                     = xyz
+;---------------------------------------------------
+
+
