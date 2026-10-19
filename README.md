@@ -22,6 +22,7 @@
   <a href="#model-systems">Model systems</a> &nbsp;·&nbsp;
   <a href="#installation">Installation</a> &nbsp;·&nbsp;
   <a href="#building-a-system">Building a system</a> &nbsp;·&nbsp;
+  <a href="#command-line">Command line</a> &nbsp;·&nbsp;
   <a href="#simulation-workflow">Simulation workflow</a> &nbsp;·&nbsp;
   <a href="docs/output_files.md">Output files</a> &nbsp;·&nbsp;
   <a href="#test-case">Test case</a>
@@ -67,6 +68,7 @@ coverages Γ&nbsp;=&nbsp;0.45, 1.65 and 3.90 molecules/nm<sup>2</sup>, as built 
 <td valign="top">
 
 - Check of the input files of all stages with `gmx grompp` alone
+- Command-line tool, `apadana build` and `apadana sheet`, besides the Python functions
 - README of every system
 - One-page overview sheet of every system
 - Test case, with a test that builds it again and compares every file
@@ -239,6 +241,32 @@ same dry and wet simulations as the SAM systems. Chains can also be grafted dire
   still run.
 
 
+## Command line
+
+Everything above can also be done without writing Python, from a shell or in a job script on a
+cluster. After `pip install .`, the command `apadana` is available (or `python -m apadana`):
+
+| Command | What it does |
+| --- | --- |
+| `apadana build` | builds one system, or every combination of several chain lengths and coverages at the same time |
+| `apadana sheet` | draws the overview sheet of a built system again, from the files in its folder |
+
+```bash
+apadana build --chain-length 8 --coverage 2.40 --seed 1
+apadana build --chain-length 4 5 6 7 8 --coverage 0.45 2.40 --seed 1 --processes 4
+apadana build --coverage 0 --surface-mode cell --x-tiles 10 --y-tiles 12
+apadana build --chain-length 8 --coverage 2.40 --surface-mode user --user-surface confout.gro
+apadana sheet L8_G2.40
+```
+
+The options are those of `build_sam_system` (`--surface-mode`, `--x-tiles`, `--vacuum`,
+`--restrained-layer`, `--system-name`, ...), and options that are not given keep their defaults.
+SLURM settings are given as `--hpc account=my_account --hpc partition=batch`. A system is written to
+`L<chain length>_G<coverage as typed>`, for example `L8_G2.40`, and a new slab to `slab_<x>x<y>`;
+`--output` sets the folder of one system, or the folder in which the folders of a series are made.
+`apadana build --help` lists all options with examples.
+
+
 ## Simulation workflow
 
 Every system is simulated dry, surrounded by vacuum, and wet, immersed in water. The grafted chains
@@ -349,6 +377,7 @@ matplotlib.
 | --- | --- |
 | `apadana/builder.py` | `build_sam_system`: grafting on both faces and writing of all files |
 | `apadana/parallel.py` | `build_many_systems`: several builds at the same time, one per CPU core |
+| `apadana/command_line.py` | the command-line tool `apadana` (also `python -m apadana`) |
 | `apadana/surface.py` | `SilicaSlab`: relaxed slab, unit cells or a slab of the user |
 | `apadana/molecules.py` | `Alkylsilane` and its chemical groups; CF<sub>2</sub> and CF<sub>3</sub> groups for fluorinated chains are included but not yet used by `build_sam_system` |
 | `apadana/gromacs_files.py` | molecule file, topologies, index groups and position restraints |

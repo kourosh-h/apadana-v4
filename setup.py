@@ -18,4 +18,6 @@ setup(
         'numpy',
     ],
     python_requires='>=3.9, <3.11',
+    # the command-line tool: apadana build ..., apadana sheet ...
+    entry_points={'console_scripts': ['apadana = apadana.command_line:main']},
 )
