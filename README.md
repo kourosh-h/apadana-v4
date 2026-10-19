@@ -52,6 +52,7 @@ coverages Γ&nbsp;=&nbsp;0.45, 1.65 and 3.90 molecules/nm<sup>2</sup>, as built 
 - Independent random binding locations on the two faces, reproducible with a seed
 - The relaxed slab of the package, new slabs of any size from unit cells, or a slab of the user
 - The pristine slab (Γ&nbsp;=&nbsp;0)
+- Several systems at the same time, one per CPU core
 
 </td>
 <td valign="top">
@@ -169,6 +170,31 @@ build of a system on the slab of the package takes about 10 minutes.
 A commented example with all arguments is [`examples/build_example.py`](examples/build_example.py).
 
 </details>
+
+### Many systems at once
+
+A build runs on one CPU core and takes from about 3 to 15 minutes, longer for more chains. A series of
+systems is built in parallel, one system per core, with `build_many_systems`:
+
+```python
+from apadana import build_many_systems
+
+if __name__ == '__main__':
+    systems = []
+    for chain_length in [4, 5, 6, 7, 8]:
+        systems.append({'chain_length': chain_length, 'coverage': 2.40})
+    build_many_systems(systems, processes=4, random_seed=1)
+```
+
+Every dictionary holds the arguments of one system, and the arguments after the list apply to all
+systems. A system without `output_folder` is written to `L<chain_length>_G<coverage>`. `processes` is
+the number of systems built at the same time; by default, one per CPU core. Every build runs in a new
+Python process, so its files are the same as those of a separate build, and its messages are written to
+`build.log` in its folder. The builds are started under `if __name__ == '__main__':`, because every new
+process reads the script again. A build needs between 0.5 GB of memory (few chains) and 0.8 GB
+(*L*&nbsp;=&nbsp;8 at 3.90 molecules/nm<sup>2</sup>), which limits the number of builds that can run at
+the same time on a computer with little free memory. The example is
+[`examples/build_many_systems.py`](examples/build_many_systems.py).
 
 ### Silica slab
 
@@ -322,6 +348,7 @@ matplotlib.
 | Path | Content |
 | --- | --- |
 | `apadana/builder.py` | `build_sam_system`: grafting on both faces and writing of all files |
+| `apadana/parallel.py` | `build_many_systems`: several builds at the same time, one per CPU core |
 | `apadana/surface.py` | `SilicaSlab`: relaxed slab, unit cells or a slab of the user |
 | `apadana/molecules.py` | `Alkylsilane` and its chemical groups; CF<sub>2</sub> and CF<sub>3</sub> groups for fluorinated chains are included but not yet used by `build_sam_system` |
 | `apadana/gromacs_files.py` | molecule file, topologies, index groups and position restraints |
@@ -331,7 +358,7 @@ matplotlib.
 | `apadana/data/silica` | relaxed slab and α-quartz unit cell |
 | `apadana/data/forcefield` | atom types for foyer and the `ForceField` folders |
 | `apadana/data/mdp` | `.mdp` templates |
-| `examples` | `build_example.py` (all arguments), `build_test_case.py` and the test case |
+| `examples` | `build_example.py` (all arguments), `build_many_systems.py`, `build_test_case.py` and the test case |
 | `tests` | `run_test_case.py` and `compare_with_reference.py` |
 | `docs` | description of the output files, the images of this page and `make_readme_images.py`, which makes them |
 

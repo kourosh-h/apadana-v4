@@ -29,7 +29,8 @@ L6_G1.65/
 ```
 
 The folders `dry/` and `wet/` with one folder per simulation stage are made when the job scripts
-run (see [Files written by the simulations](#files-written-by-the-simulations)).
+run (see [Files written by the simulations](#files-written-by-the-simulations)). Systems built with
+`build_many_systems` also have `build.log`, with the messages of their build.
 
 
 ### README.md
