@@ -52,7 +52,7 @@
     <Angle class1="ST" class2="OH" class3="ST" angle="2.530727415" k="165.92"/> <!--10.1007/s11249-005-5085-4-->
     <Angle class1="OH" class2="ST" class3="OH" angle="1.919862177" k="502.08"/> <!--10.1007/s11249-005-5085-4-->
 
-    <Angle class1="ISC4" class2="IOC25" class3="ST" angle="2.530727415" k="165.92"/> <!--from SI-->
+    <Angle class1="ISC4" class2="IOC25" class3="ST" angle="2.530727415" k="165.92"/>
     <Angle class1="IOC25" class2="ST" class3="OH" angle="1.919862177" k="502.080"/> <!--corrected DOI: 10.1007/s11249-005-5085-4-->
     <Angle class1="IOC25" class2="ST" class3="CT" angle="1.745329252" k="502.080"/> <!--corrected DOI: 10.1007/s11249-005-5085-4-->
  </HarmonicAngleForce>
